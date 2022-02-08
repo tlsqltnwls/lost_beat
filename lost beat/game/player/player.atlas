@@ -1,0 +1,79 @@
+animations {
+  id: "idle"
+  images {
+    image: "/resource/player/player_idle.png/0.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/player/player_idle.png/1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 2
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "walk"
+  images {
+    image: "/resource/player/player_walk.png/0.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/player/player_walk.png/1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/player/player_walk.png/2.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/player/player_walk.png/3.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/player/player_walk.png/4.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 5
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "die"
+  images {
+    image: "/resource/life.png/0.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/life.png/1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/life.png/2.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 3
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "attack"
+  images {
+    image: "/resource/potion.png/0.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/potion.png/1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 2
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

@@ -1,0 +1,33 @@
+local IDLE = hash("idle")
+local WALK = hash("walk")
+local rendercam = require "rendercam.rendercam"
+
+function move(self, action_id, action)
+	if action_id == hash("up") then
+		self.vel.y = self.speed
+	elseif action_id == hash("down") then
+		self.vel.y = -self.speed
+	elseif action_id == hash("left") then
+		self.vel.x = -self.speed
+	elseif action_id == hash("right") then
+		self.vel.x = self.speed
+	end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus") -- input 수신 메시지
+	self.vel = vmath.vector3()
+	self.speed = 100 -- 속력값
+	self.friction = 0.1  -- 마찰력
+end
+
+function update(self, dt)
+	local pos = go.get_position() + self.vel * dt
+	go.set_position(pos)
+	self.vel = self.vel - self.vel * self.friction
+end
+
+function on_input(self, action_id, action)
+	move(self, action_id, action)
+	
+end

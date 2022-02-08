@@ -13,4 +13,5 @@ input_method = HiddenInputField
 
 [project]
 title = lost beat
+dependencies#0 = https://github.com/rgrams/rendercam/archive/1.0.3.zip
 
