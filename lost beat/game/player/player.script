@@ -28,6 +28,5 @@ function update(self, dt)
 end
 
 function on_input(self, action_id, action)
-	move(self, action_id, action)
-	
+	move(self, action_id, action)	
 end
