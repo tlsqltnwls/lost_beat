@@ -8,6 +8,6 @@ end
 function on_input(self, action_id, action)
 	local mouse_position = rendercam.screen_to_world_2d(action.screen_x, action.screen_y)
 	if not action_id then
-		go.set_position(mouse_position + vmath.vector3(0, 0, 1))
+		go.set_position(mouse_position + vmath.vector3(0, 0, 0))
 	end
 end

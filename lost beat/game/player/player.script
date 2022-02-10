@@ -1,6 +1,11 @@
 local IDLE = hash("idle")
 local WALK = hash("walk")
+local DIE = hash("die")
 local rendercam = require "rendercam.rendercam"
+
+go.property("speed", 100) -- 속력값
+go.property("friction", 0.1) -- 마찰력
+go.property("hp", 100) -- 체력
 
 function play_animation(self)
 	if self.now_animation == IDLE and vmath.length(self.vel) > 10 then
@@ -14,7 +19,6 @@ end
 
 function move(self, action_id, action) -- 움직임, 몸 방향
 	local mouse_position = rendercam.screen_to_world_2d(action.screen_x,action.screen_y)
-
 	-- 움직임
 	if action_id == hash("up") then
 		self.vel.y = self.speed
@@ -25,7 +29,6 @@ function move(self, action_id, action) -- 움직임, 몸 방향
 	elseif action_id == hash("right") then
 		self.vel.x = self.speed
 	end
-
 	-- 몸 방향
 	if not action_id then
 		if mouse_position.x - go.get_position().x > 0 then
@@ -39,9 +42,7 @@ end
 function init(self)
 	msg.post(".", "acquire_input_focus") -- input 수신 메시지
 	self.vel = vmath.vector3()
-	self.speed = 100 -- 속력값
-	self.friction = 0.1  -- 마찰력
-	self.now_animation = IDLE -- 현재 상태
+	self.now_animation = IDLE
 end
 
 function update(self, dt)

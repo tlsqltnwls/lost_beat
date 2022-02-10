@@ -22,8 +22,8 @@ instances {
   }
 }
 instances {
-  id: "camera"
-  prototype: "/game/camera/camera.go"
+  id: "crosshair"
+  prototype: "/game/crosshair/crosshair.go"
   position {
     x: 0.0
     y: 0.0
@@ -42,8 +42,8 @@ instances {
   }
 }
 instances {
-  id: "crosshair"
-  prototype: "/game/crosshair/crosshair.go"
+  id: "camera"
+  prototype: "/game/camera/camera.go"
   position {
     x: 0.0
     y: 0.0
