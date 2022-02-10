@@ -14,7 +14,7 @@ components {
   }
 }
 embedded_components {
-  id: "sprite"
+  id: "player_sprite"
   type: "sprite"
   data: "tile_set: \"/game/player/player.atlas\"\n"
   "default_animation: \"idle\"\n"

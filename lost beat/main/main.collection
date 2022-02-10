@@ -3,6 +3,7 @@ instances {
   id: "player"
   prototype: "/game/player/player.go"
   children: "camera"
+  children: "crosshair"
   position {
     x: 0.0
     y: 0.0
