@@ -1,0 +1,51 @@
+local MAX_ROOM = 5
+local MAX_X = 30
+local MIN_X = 20
+local MAX_Y = 30
+local MIN_Y = 20
+
+
+function init(self)
+	self.x=math.random(MIN_X,MAX_X)
+	self.y=math.random(MIN_Y,MAX_Y)
+	for room = 0, MAX_ROOM do
+		for x =0, self.x do
+			for y = 0, self.y do
+				tilemap.set_tile("#tilemap", "tile", x, y, "#tilemal#tile")
+		
+			end
+		end
+	end
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	
+end
+
+function on_message(self, message_id, message, sender)
+
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
