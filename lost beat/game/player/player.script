@@ -3,7 +3,7 @@ local WALK = hash("walk")
 local DIE = hash("die")
 local rendercam = require "rendercam.rendercam"
 
-go.property("speed", 100) -- 속력값
+go.property("speed", 1000) -- 속력값
 go.property("friction", 0.1) -- 마찰력
 go.property("hp", 100) -- 체력
 

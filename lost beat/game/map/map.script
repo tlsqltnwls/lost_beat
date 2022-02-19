@@ -1,51 +1,223 @@
-local MAX_ROOM = 5
-local MAX_X = 30
-local MIN_X = 20
-local MAX_Y = 30
-local MIN_Y = 20
-
-
-function init(self)
-	self.x=math.random(MIN_X,MAX_X)
-	self.y=math.random(MIN_Y,MAX_Y)
-	for room = 0, MAX_ROOM do
-		for x =0, self.x do
-			for y = 0, self.y do
-				tilemap.set_tile("#tilemap", "tile", x, y, "#tilemal#tile")
-		
-			end
+local MAX_ROOM = 10--path	
+if room[room_number].center.x==room[standard_room_number].center.x then--x line is same
+	if room[room_number].center.y<room[standard_room_number].center.y then--current room is under
+		for y=tile_y_max+1, room[standard_room_number].center.y-room[standard_room_number].size-1 do
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x+1, y, 112)
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x, y, 24)
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x-1, y, 112)
+		end
+	else--current room is over
+		for y=tile_y_min-1, room[standard_room_number].center.y+room[standard_room_number].size+1,-1 do
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x+1, y, 112)
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x, y, 24)
+			tilemap.set_tile("#tilemap", "tile", room[room_number].center.x-1, y, 112)
+		end
+	end
+else--y line is same
+	if room[room_number].center.x<room[standard_room_number].center.x then--current room is left
+		for y=tile_x_max+1, room[standard_room_number].center.x-room[standard_room_number].size-1,-1 do
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y+1, 112)
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y, 24)
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y-1, 112)
+		end
+	else--current room is right
+		for y=tile_x_min-1, room[standard_room_number].center.x+room[standard_room_number].size+1 do
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y+1, 112)
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y, 24)
+			tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y-1, 112)
 		end
 	end
 end
+local MAX_SIZE = 7
+local MIN_SIZE = 5
+local DISTANCE_ROOM=MAX_SIZE*3
+local room={}
+local room_count=1
 
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
+math.randomseed(os.time()+os.clock())
 
-function update(self, dt)
+function make_table(self)
+	--make table
+	table={}
+	for i=1,MAX_ROOM do
+		table[i]={}
+		for j=1,MAX_ROOM do
+			table[i][j]=0
+		end
+	end
 	
+	--make room table
+	for i=1, MAX_ROOM do
+		room[i]={}
+	end
+
+	
+	x=MAX_ROOM/2
+	if (MAX_ROOM % 2)==1 then
+		x=x-0.5
+	end
+	y=x
+	print(x..y)
+	room_x=0
+	room_y=0
+	
+	--first room
+	room[1]={size=3, center={x=0,y=0}}
+	make_map(1,1)
+	room_number=2
+	table[x][y]=1
+	
+	--make_table,room
+	while room_count<MAX_ROOM+1 do
+		standard_room_number=table[x][y]
+		path_number=math.random(1,10)
+		if path_number<5 then--one path 40%
+			path_number=1
+		elseif path_number<8 then--two path 30%
+			path_number=2
+		elseif path_number<10 then--three path 20%
+			path_number=3
+		else-- four path 10%
+			path_number=4
+		end	
+		select=0
+		room_count=room_count+path_number
+		--make table
+		while room_number-1~=room_count do
+			select=math.random(0,3)
+			if select==0 then--up
+					if y>1 and table[x][y-1]==0 then
+						table[x][y-1]=room_number
+						room[room_number]={size=math.random(MIN_SIZE,MAX_SIZE), center={x=room_x ,y=room_y+DISTANCE_ROOM}}
+						make_map(standard_room_number,room_number)
+						room_number=room_number+1
+					else
+						room_count=room_count-1
+					end
+			elseif select==1 then--down
+					if y<10 and table[x][y+1]==0 then
+						table[x][y+1]=room_number
+						room[room_number]={size=math.random(MIN_SIZE,MAX_SIZE), center={x=room_x ,y=room_y-DISTANCE_ROOM}}
+						make_map(standard_room_number,room_number)
+						room_number=room_number+1
+					else
+						room_count=room_count-1
+					end
+			elseif select==2 then--right	
+					if x<10 and table[x+1][y]==0 then
+						table[x+1][y]=room_number
+						room[room_number]={size=math.random(MIN_SIZE,MAX_SIZE), center={x=room_x+DISTANCE_ROOM ,y=room_y}}
+						make_map(standard_room_number,room_number)
+						room_number=room_number+1
+					else
+						room_count=room_count-1
+					end
+			else--left
+					if x>1 and table[x-1][y]==0 then
+						table[x-1][y]=room_number
+						room[room_number]={size=math.random(MIN_SIZE,MAX_SIZE), center={x=room_x-DISTANCE_ROOM ,y=room_y}}
+						make_map(standard_room_number,room_number)
+						room_number=room_number+1
+					else
+						room_count=room_count-1
+					end
+			end
+		end
+		
+		--standard (x,y) is move
+		if select==0 then--up
+			if y>0 then	
+				y=y-1
+				room_y=room_y+DISTANCE_ROOM
+			end
+		elseif select==1 then--down
+			if y<10 then
+				y=y+1
+				room_y=room_y-DISTANCE_ROOM
+			end
+		elseif select==2 then--right
+			if x<10 then	
+				x=x+1
+				room_x=room_x+DISTANCE_ROOM
+			end
+		else--left
+			if x>0 then
+				x=x-1
+				room_x=room_x-DISTANCE_ROOM
+			end
+		end
+	end
+	print_info(self)
 end
 
-function on_message(self, message_id, message, sender)
-
+function print_info(self)
+	for i=1,MAX_ROOM do
+		print(table[1][i].."  "..table[2][i].."  "..table[3][i].."  "..table[4][i].."  "..table[5][i].."  "..table[6][i].."  "..table[7][i].."  "..table[8][i].."  "..table[9][i].."  "..table[10][i])
+		print("----------"..i.."--------------")
+	end
+	print(room_count)
+	for i=1,room_count do
+		print(i..". size: "..room[i].size.." room_x: "..room[i].center.x.." room_y: "..room[i].center.y)
+	end
 end
 
-function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+function make_map(standard_room_number,room_number)
+	print("standard: "..standard_room_number.."room: "..room_number)
+		tile_x_min=room[room_number].center.x-room[room_number].size
+		tile_x_max=room[room_number].center.x+room[room_number].size
+		tile_y_min=room[room_number].center.y-room[room_number].size
+		tile_y_max=room[room_number].center.y+room[room_number].size
+
+		--wall
+		for x=tile_x_min-1,tile_x_max+1 do
+			tilemap.set_tile("#tilemap", "tile", x, tile_y_min-1, 112)--112 is wall
+			tilemap.set_tile("#tilemap", "tile", x, tile_y_max+1, 112)--112 is wall
+		end
+		for y=tile_y_min-1,tile_y_max+1 do
+			tilemap.set_tile("#tilemap", "tile", tile_x_min-1, y, 112)--112 is wall
+			tilemap.set_tile("#tilemap", "tile", tile_x_max+1, y, 112)--112 is wall
+		end
+		
+		--tile
+		for x=tile_x_min,tile_x_max do
+			for y=tile_y_min,tile_y_max do
+				tilemap.set_tile("#tilemap", "tile", x, y, 87)--87 is tile
+			end
+		end
+
+		--path	
+		if room[room_number].center.x==room[standard_room_number].center.x then--x line is same
+			if room[room_number].center.y<room[standard_room_number].center.y then--current room is under
+				for y=tile_y_max+1, room[standard_room_number].center.y-room[standard_room_number].size-1 do
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x+1, y, 112)
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x, y, 24)
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x-1, y, 112)
+				end
+			else--current room is over
+				for y=tile_y_min-1, room[standard_room_number].center.y+room[standard_room_number].size+1,-1 do
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x+1, y, 112)
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x, y, 24)
+					tilemap.set_tile("#tilemap", "tile", room[room_number].center.x-1, y, 112)
+				end
+			end
+		else--y line is same
+			if room[room_number].center.x<room[standard_room_number].center.x then--current room is left
+				for x=tile_x_max+1, room[standard_room_number].center.x-room[standard_room_number].size-1 do
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y+1, 112)
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y, 24)
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y-1, 112)
+				end
+			else--current room is right
+				for x=tile_x_min-1, room[standard_room_number].center.x+room[standard_room_number].size+1,-1 do
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y+1, 112)
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y, 24)
+					tilemap.set_tile("#tilemap", "tile", x, room[room_number].center.y-1, 112)
+				end
+			end
+		end
 end
 
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Learn more: https://defold.com/manuals/hot-reload/
-	-- Remove this function if not needed
+function init(self)
+	make_table(self)
 end
+
